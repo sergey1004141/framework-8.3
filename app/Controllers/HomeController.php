@@ -2,15 +2,15 @@
 
 namespace App\Controllers;
 
-class HomeController
+use Framework\Router\Route;
+
+class HomeController extends BaseController
 {
+    #[Route(path: '/')]
     public function index(): string
     {
-        return app()->view->render('home/index', ['name' => 'John Do', 'age' => 20]);
-    }
-
-    public function test(): string
-    {
-        return app()->view->render('home/index', ['name' => 'John Do', 'age' => 20]);
+        return app()->view->render('home/index', [
+            'title' => 'Главная',
+        ]);
     }
 }

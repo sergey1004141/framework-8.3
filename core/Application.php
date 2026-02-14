@@ -23,7 +23,8 @@ class Application
         $this->view = new View();
     }
 
-    public function run() {
+    public function run(): void
+    {
         echo $this->router->despatch();
     }
 }

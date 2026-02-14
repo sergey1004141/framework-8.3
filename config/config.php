@@ -9,3 +9,4 @@ const CORE = ROOT . '/core';
 const APP = ROOT . '/app';
 const VIEWS = APP . '/Views';
 const LAYOUTS = VIEWS . '/layouts';
+const APP_NAME = 'Мой фреймворк';

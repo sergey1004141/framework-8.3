@@ -13,7 +13,6 @@ require_once ROOT . '/vendor/autoload.php';
 require_once HELPERS . '/helpers.php';
 
 $app = new Application();
-require_once CONFIG . '/router.php';
 $app->run();
 
 dump("Time: " . (microtime(true) - $start_framework));

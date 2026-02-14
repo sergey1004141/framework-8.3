@@ -2,21 +2,24 @@
 
 namespace Framework;
 
-use Buggregator\Trap\Config\Server\App;
-use Buggregator\Trap\Handler\Router\Attribute\Route;
+use App\Controllers\BaseController;
+use Framework\Router\Route;
 
 class Router
 {
-    protected $routes = [];
-
+    private array $routes = [];
     protected $route_params = [];
 
     public function __construct(
         protected Request  $request,
         protected Response $response
-    ) {}
+    )
+    {
+        $this->parseRoutes();
+    }
 
-    public function add($path, $callback, $method = 'GET'): self {
+    public function add($path, $method = 'GET'): self
+    {
         $path = '/' . trim($path, '/');
         $method = is_array($method) ? array_map('strtoupper', $method) : [strtoupper($method)];
         $this->routes[] = [
@@ -29,32 +32,48 @@ class Router
         return $this;
     }
 
-    public function get($path, $callback): self
+    private function parseRoutes()
     {
-        return $this->add($path, $callback, 'GET');
-    }
-
-    public function post($path, $callback): self
-    {
-        return $this->add($path, $callback, 'POST');
-    }
-    public function getRoutes(): array
-    {
-        return $this->routes;
+        foreach (glob(APP . '/Controllers/*' . 'php') as $controller) {
+            $controller = 'App\\Controllers\\' . basename($controller, '.php');
+            $reflectionClass = new \ReflectionClass($controller);
+            $methods = $reflectionClass->getMethods();
+            foreach ($methods as $method) {
+                $attributes = $method->getAttributes();
+                foreach ($attributes as $attribute) {
+                    if (preg_match('/^Framework\\\Router\\\(Route|Get|Post|Put|Delete)$/', $attribute->getName())) {
+                        $instance = $attribute->newInstance();
+                        $path = '/' . trim($instance->path, '/');
+                        $action = $method->getName();
+                        $method = is_array($instance->method) ? array_map('strtoupper', $instance->method) : [strtoupper($instance->method)];
+//                    $middleware = $method->getName();
+//                    $middleware = is_array($method) ? array_map('strtoupper', $method) : [strtoupper($method)];
+                        $this->routes[] = [
+                            'path' => $path,
+                            'controller' => $controller,
+//                        'middleware' => $middleware,
+                            'action' => $action,
+                            'method' => $method,
+                            'needToken' => true,
+                        ];
+                    }
+                }
+            }
+        }
+        return $this;
     }
 
     public function despatch(): mixed {
         $path = $this->request->getPath();
         $route = $this->matchRoute($path);
+
         if (false === $route) {
             $this->response->setResponseCode(404);
             echo '404 Not Found';
             return '';
         }
-        if (is_array($route['callback'])) {
-            $route['callback'][0] = new $route['callback'][0];
-        }
-        return call_user_func($route['callback']);
+
+        return call_user_func([new $route['controller'], $route['action']]);
     }
 
     protected function matchRoute($path): array|false
@@ -74,4 +93,6 @@ class Router
         }
         return false;
     }
+
+
 }
