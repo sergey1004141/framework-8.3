@@ -1,0 +1,15 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Framework\\": "core/",
+            "App\\": "app/"
+        }
+    },
+    "require-dev": {
+        "buggregator/trap": "^1.15"
+    },
+    "require": {
+        "php": ">=8.0",
+        "doctrine/orm": "^3.6"
+    }
+}
