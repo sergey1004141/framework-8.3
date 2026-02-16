@@ -1,6 +1,7 @@
 <?php
 /**
  * @var $title string //Заголовок страницы
+ * @var $this \Framework\View
  */
 ?>
 <!doctype html>
@@ -13,6 +14,7 @@
     <title><?= APP_NAME ?> - <?= $title ?></title>
     <link rel="icon" href="<?= base_url('/favicon.png') ?>">
     <link rel="stylesheet" href="<?= base_url('/assets/bootstrap/css/bootstrap.min.css') ?>">
+    <?php $this->renderCSS(); ?>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -38,5 +40,6 @@
 </nav>
 <?= $this->content ?>
 <script src="<?= base_url('/assets/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
+<?php $this->renderJS(); ?>
 </body>
 </html>

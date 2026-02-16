@@ -15,7 +15,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 # if a resource
 RewriteCond %{REQUEST_URI} !\.(jpe?g|gif|png|ico|webp|js|css|pdf|zip)$ [NC]
-# otherwise forward it to index.php
+# otherwise forward it to register.php
 RewriteRule . index.php [L]
 
 #<filesmatch ".(jpe?g|gif|png|ico|webp)$">

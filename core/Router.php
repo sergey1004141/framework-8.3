@@ -18,20 +18,6 @@ class Router
         $this->parseRoutes();
     }
 
-    public function add($path, $method = 'GET'): self
-    {
-        $path = '/' . trim($path, '/');
-        $method = is_array($method) ? array_map('strtoupper', $method) : [strtoupper($method)];
-        $this->routes[] = [
-            'path' => $path,
-            'callback' => $callback,
-            'middleware' => [],
-            'method' => $method,
-            'needToken' => true,
-        ];
-        return $this;
-    }
-
     private function parseRoutes()
     {
         foreach (glob(APP . '/Controllers/*' . 'php') as $controller) {

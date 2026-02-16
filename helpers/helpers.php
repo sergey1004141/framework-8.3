@@ -39,3 +39,10 @@ function base_url($path = ''): string
     return PATH . $path;
 }
 
+function assets_css(): string {
+
+}
+
+function assets_js(): string {
+
+}

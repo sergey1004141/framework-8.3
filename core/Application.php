@@ -11,6 +11,7 @@ class Application
     public Response $response;
     public Router $router;
     public View $view;
+    public Assets $assets;
     public static Application $app;
 
     public function __construct()
@@ -21,6 +22,10 @@ class Application
         $this->response = new Response();
         $this->router = new Router($this->request, $this->response);
         $this->view = new View();
+        if (config['debug']) {
+            $this->view->registerJS('/assets/debug/js/debug.js');
+            $this->view->registerCSS('/assets/debug/css/debug.css');
+        }
     }
 
     public function run(): void
