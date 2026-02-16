@@ -22,9 +22,6 @@ class UserController extends BaseController
     {
         $model = new User();
         $model->loadData();
-        dump($model->attributes);
-        dump($model->validate());
-        dump($model->errors());
         return app()->view->render('user/register', [
             'title' => 'Регистрация',
         ], 'auth');

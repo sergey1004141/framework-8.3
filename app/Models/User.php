@@ -18,4 +18,11 @@ class User extends Model
             ['password', 'confirmPassword']
         ],
     ];
+
+    protected array $labels = [
+        'name' => 'Имя пользователя',
+        'email' => 'Email',
+        'password' => 'Пароль',
+        'confirmPassword' => 'Подтверждение пароля',
+    ];
 }

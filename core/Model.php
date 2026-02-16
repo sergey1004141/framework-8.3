@@ -10,10 +10,11 @@ class Model
     public array $attributes = [];
     protected array $rules = [];
     public array $errors = [];
+    protected array $labels = [];
 
     public function __construct()
     {
-        Validator::langDir(LANG.'/validator');
+        Validator::langDir(LANG . '/validator');
         Validator::lang(config['lang']);
     }
 
@@ -31,25 +32,24 @@ class Model
         }
     }
 
-    public function validate($data = [], $rules = []): bool {
-        if (!$data) {
-            $data = $this->attributes;
-        }
-        if (!$rules) {
-            $rules = $this->rules;
-        }
+    public function validate($data = [], $rules = [], $labels = []): bool
+    {
+        $data = $data ?: $this->attributes;
+        $rules = $rules ?: $this->rules;
+        $labels = $labels ?: $this->labels;
         $validator = new Validator($data);
         $validator->rules($rules);
+        $validator->labels($labels);
         if ($validator->validate()) {
             return true;
-        }
-        else {
+        } else {
             $this->errors = $validator->errors();
             return false;
         }
     }
 
-    public function errors(): array {
+    public function errors(): array
+    {
         return $this->errors;
     }
 }
